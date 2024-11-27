@@ -1,0 +1,80 @@
+<testApp>:
+    Screen:
+        Image:
+            source: "pic.jpeg"
+            size_hint: None ,None
+            width:"1080dp"
+            height:"1920dp"
+            pos_hint:{'center_x':.5,'center_y':.5}
+        BoxLayout:
+            size_hint:.2,None
+            height: "30dp"
+            pos_hint: {'center_x':.85, 'center_y':.95} 
+            spacing: "5dp"
+            MDFlatButton:
+                text: "Back"
+                font_size:"15dp"
+                size_hint_x: .2
+                md_bg_color:"#008000"     
+             
+        MDLabel:
+            text:"LOGIN" 
+            font_size:"20dp"
+            halign:"center"
+            color:"#008000"
+            pos_hint:{"center_y":.8}
+           
+        MDTextField:
+            hint_text:"username"
+            icon_right:'account'
+            font_size:"20dp"
+            size_hint_x:.85
+            pos_hint:{'center_x':.5,'center_y':.65}
+            on_text: self.text = self.text.replace(" ", "")
+            write_tab:False
+        MDTextField:
+            id:psswd
+            hint_text:"password"
+            password:True
+            icon_right:'eye-off'
+            font_size:"20dp"
+            size_hint_x:.85
+            pos_hint:{'center_x':.5,'center_y':.5} 
+            on_text: self.text = self.text.replace(" ", "")
+            write_tab:False
+             
+        BoxLayout:
+            size_hint: .85, None 
+            height: "30dp" 
+            pos_hint: {'center_x':.5, 'center_y':.4} 
+            spacing:"5dp"
+            MDCheckbox:
+                id:cb
+                size_hint: None, None
+                width: "30dp" 
+                height: "30dp"    
+                on_press:
+                    psswd.password = False if psswd.password == True else True  
+                    psswd.icon_right = "eye" if psswd.icon_right == "eye-off" else "eye-off"
+            MDLabel:
+                text:"[ref=Show Password]Show Password[/ref]"
+                markup: True    
+                on_ref_press:
+                    cb.active = False if cb.active == True else True  
+                    psswd.password = False if psswd.password == True else True 
+                    psswd.icon_right = "eye" if psswd.icon_right == "eye-off" else "eye-off" 
+            MDFlatButton:
+                text: "LOGIN"
+                font_size:"15dp"
+                size_hint_x: .5
+                md_bg_color:"#008000"            
+        BoxLayout:
+            size_hint:.85, None
+            height: "30dp"
+            pos_hint: {'center_x':.5, 'center_y':.3} 
+            spacing: "5dp"
+            MDFlatButton:
+                text: "REGISTER"
+                font_size:"22dp"
+                size_hint_x: 1
+                md_bg_color:"#008000"
