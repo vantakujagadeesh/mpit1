@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crop Price Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f8f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .market-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+        .prediction {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .recent-predictions {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        
+        .recent-predictions h2 {
+            color: #2c3e50;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+        
+        .prediction-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .prediction-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Crop Price Prediction</h1>
+            <img src="{{ url_for('static', filename='market.jpg') }}" alt="Market Image" class="market-image">
+        </div>
+
+        <form action="{{ url_for('predict') }}" method="post">
+            <div class="form-group">
+                <label>Crop Type:</label>
+                <select name="crop_type" required>
+                    {% for crop in crops %}
+                    <option value="{{ crop[2] }}">{{ crop[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Season:</label>
+                <select name="season" required>
+                    <option value="0">Spring</option>
+                    <option value="1">Summer</option>
+                    <option value="2">Fall</option>
+                    <option value="3">Winter</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Production Volume (tons):</label>
+                <input type="number" name="production" placeholder="Enter production volume" required>
+            </div>
+            <div class="form-group">
+                <label>Demand Level (1-10):</label>
+                <input type="number" name="demand" min="1" max="10" placeholder="Enter demand level" required>
+            </div>
+            
+            <button type="submit" class="submit-btn">Predict Price</button>
+        </form>
+
+        {% if prediction_text %}
+        <div class="prediction">
+            {{ prediction_text }}
+        </div>
+        {% endif %}
+
+        {% if recent_predictions %}
+        <div class="recent-predictions">
+            <h2>Recent Predictions</h2>
+            <ul class="prediction-list">
+                {% for pred in recent_predictions %}
+                <li class="prediction-item">
+                    {{ pred[0] }} - ₹{{ "%.2f"|format(pred[1]) }} 
+                    <small>({{ pred[2] }})</small>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html> 
